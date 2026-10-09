@@ -35,7 +35,7 @@ public class ReservaController {
         } catch (Exception e) {
             log.error("Falló al listar las reservas: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, no pudimos cargar las reservas. Intenta de nuevo"));
+                    .body(new ApiResponse<>(false, "Error al cargar las reservas. Intenta de nuevo"));
         }
     }
 
@@ -51,13 +51,12 @@ public class ReservaController {
         } catch (Exception e) {
             log.error("Falló al buscar la reserva " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, no pudimos traer los datos de la reserva"));
+                    .body(new ApiResponse<>(false, "Error traer los datos de la reserva"));
         }
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ReservaResponseDTO>> registrar(@Valid @RequestBody ReservaRequestDTO json,
-                                                                     BindingResult validacion) {
+    public ResponseEntity<ApiResponse<ReservaResponseDTO>> registrar(@Valid @RequestBody ReservaRequestDTO json, BindingResult validacion) {
         if (validacion.hasErrors()) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, juntarErrores(validacion)));
         }
@@ -68,16 +67,14 @@ public class ReservaController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, e.getMessage()));
         } catch (Exception e) {
-            log.error("Falló al registrar la reserva: " + e.getMessage());
+            log.error("Error al registrar la reserva: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, algo salió mal al registrar la reserva"));
+                    .body(new ApiResponse<>(false, "Error al registrar la reserva"));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReservaResponseDTO>> actualizar(@PathVariable Long id,
-                                                                      @Valid @RequestBody ReservaRequestDTO json,
-                                                                      BindingResult validacion) {
+    public ResponseEntity<ApiResponse<ReservaResponseDTO>> actualizar(@PathVariable Long id, @Valid @RequestBody ReservaRequestDTO json, BindingResult validacion) {
         if (validacion.hasErrors()) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, juntarErrores(validacion)));
         }
@@ -91,15 +88,14 @@ public class ReservaController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, e.getMessage()));
         } catch (Exception e) {
-            log.error("Falló al actualizar la reserva " + id + ": " + e.getMessage());
+            log.error("Error al actualizar la reserva " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, algo salió mal al actualizar la reserva"));
+                    .body(new ApiResponse<>(false, "Error al actualizar la reserva"));
         }
     }
 
     @PutMapping("/{id}/estado")
-    public ResponseEntity<ApiResponse<ReservaResponseDTO>> cambiarEstado(@PathVariable Long id,
-                                                                         @RequestBody Map<String, String> json) {
+    public ResponseEntity<ApiResponse<ReservaResponseDTO>> cambiarEstado(@PathVariable Long id, @RequestBody Map<String, String> json) {
         try {
             ReservaResponseDTO actualizada = service.cambiarEstado(id, json.get("estado"));
             if (actualizada == null) {
@@ -110,7 +106,7 @@ public class ReservaController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, e.getMessage()));
         } catch (Exception e) {
-            log.error("Falló al cambiar el estado de la reserva " + id + ": " + e.getMessage());
+            log.error("Error cambiar el estado de la reserva " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(false, "Ups, algo salió mal al cambiar el estado"));
         }
@@ -125,9 +121,9 @@ public class ReservaController {
             }
             return ResponseEntity.ok(new ApiResponse<>(true, "Reserva eliminada"));
         } catch (Exception e) {
-            log.error("Falló al eliminar la reserva " + id + ": " + e.getMessage());
+            log.error("Error al eliminar la reserva " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, algo salió mal al eliminar la reserva"));
+                    .body(new ApiResponse<>(false, "Error algo salió mal al eliminar la reserva"));
         }
     }
 

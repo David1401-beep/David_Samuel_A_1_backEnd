@@ -27,9 +27,9 @@ public class VehiculoController {
             List<VehiculoResponseDTO> lista = service.listarTodos();
             return ResponseEntity.ok(new ApiResponse<>(true, "Vehículos cargados", lista));
         } catch (Exception e) {
-            log.error("Falló al listar los vehículos: " + e.getMessage());
+            log.error("Error al listar los vehículos: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, no pudimos cargar los vehículos. Intenta de nuevo"));
+                    .body(new ApiResponse<>(false, "Error, no pudimos cargar los vehículos. Intenta de nuevo"));
         }
     }
 
@@ -43,9 +43,9 @@ public class VehiculoController {
             }
             return ResponseEntity.ok(new ApiResponse<>(true, "Vehículo encontrado", dto));
         } catch (Exception e) {
-            log.error("Falló al buscar el vehículo " + id + ": " + e.getMessage());
+            log.error("Error al buscar el vehículo " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, no pudimos traer los datos del vehículo"));
+                    .body(new ApiResponse<>(false, "Error, no pudimos traer los datos del vehículo"));
         }
     }
 }

@@ -34,7 +34,7 @@ public class ClienteController {
         } catch (Exception e) {
             log.error("Falló al listar los clientes: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, no pudimos cargar los clientes. Intenta de nuevo"));
+                    .body(new ApiResponse<>(false, "NO pudimos cargar los clientes. Intenta de nuevo"));
         }
     }
 
@@ -48,21 +48,20 @@ public class ClienteController {
             }
             return ResponseEntity.ok(new ApiResponse<>(true, "Cliente encontrado", dto));
         } catch (Exception e) {
-            log.error("Falló al buscar el cliente " + id + ": " + e.getMessage());
+            log.error("Fallo al buscar el cliente " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, no pudimos traer los datos del cliente"));
+                    .body(new ApiResponse<>(false, "NO pudimos traer los datos del cliente"));
         }
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ClienteResponseDTO>> registrar(@Valid @RequestBody ClienteRequestDTO json,
-                                                                     BindingResult validacion) {
+    public ResponseEntity<ApiResponse<ClienteResponseDTO>> registrar(@Valid @RequestBody ClienteRequestDTO json, BindingResult validacion) {
         if (validacion.hasErrors()) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, juntarErrores(validacion)));
         }
         try {
             ClienteResponseDTO creado = service.insertar(json);
-            log.info("Se registró un cliente nuevo: " + creado);
+            log.info("Se registro un cliente nuevo: " + creado);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(true, "Cliente registrado con éxito", creado));
         } catch (IllegalArgumentException e) {
@@ -70,14 +69,12 @@ public class ClienteController {
         } catch (Exception e) {
             log.error("Falló al registrar el cliente: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, algo salió mal al registrar el cliente"));
+                    .body(new ApiResponse<>(false, "Error al registrar el cliente"));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ClienteResponseDTO>> actualizar(@PathVariable Long id,
-                                                                      @Valid @RequestBody ClienteRequestDTO json,
-                                                                      BindingResult validacion) {
+    public ResponseEntity<ApiResponse<ClienteResponseDTO>> actualizar(@PathVariable Long id, @Valid @RequestBody ClienteRequestDTO json, BindingResult validacion) {
         if (validacion.hasErrors()) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, juntarErrores(validacion)));
         }
@@ -91,9 +88,9 @@ public class ClienteController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, e.getMessage()));
         } catch (Exception e) {
-            log.error("Falló al actualizar el cliente " + id + ": " + e.getMessage());
+            log.error("Error al actualizar el cliente " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, algo salió mal al actualizar el cliente"));
+                    .body(new ApiResponse<>(false, "Error al actualizar el cliente"));
         }
     }
 
@@ -108,9 +105,9 @@ public class ClienteController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, e.getMessage()));
         } catch (Exception e) {
-            log.error("Falló al eliminar el cliente " + id + ": " + e.getMessage());
+            log.error("Error al eliminar el cliente " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Ups, algo salió mal al eliminar el cliente"));
+                    .body(new ApiResponse<>(false, "Error al eliminar el cliente"));
         }
     }
 
